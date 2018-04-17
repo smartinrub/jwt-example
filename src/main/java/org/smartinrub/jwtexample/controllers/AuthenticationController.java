@@ -1,21 +1,19 @@
 package org.smartinrub.jwtexample.controllers;
 
-import static org.smartinrub.jwtexample.utils.SecurtityConstants.JWT_EXPIRATION_TIME;
-import static org.smartinrub.jwtexample.utils.SecurtityConstants.JWT_SECRET;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.smartinrub.jwtexample.models.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import javax.validation.Valid;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.smartinrub.jwtexample.utils.SecurityConstants.JWT_EXPIRATION_TIME;
+import static org.smartinrub.jwtexample.utils.SecurityConstants.JWT_SECRET;
 
 @RestController("/token")
 public class AuthenticationController {

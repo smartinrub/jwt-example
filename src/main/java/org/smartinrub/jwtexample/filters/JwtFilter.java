@@ -1,8 +1,8 @@
 package org.smartinrub.jwtexample.filters;
 
-import static org.smartinrub.jwtexample.utils.SecurtityConstants.HEADER_STRING;
-import static org.smartinrub.jwtexample.utils.SecurtityConstants.JWT_SECRET;
-import static org.smartinrub.jwtexample.utils.SecurtityConstants.TOKEN_PREFIX;
+import static org.smartinrub.jwtexample.utils.SecurityConstants.HEADER_STRING;
+import static org.smartinrub.jwtexample.utils.SecurityConstants.JWT_SECRET;
+import static org.smartinrub.jwtexample.utils.SecurityConstants.TOKEN_PREFIX;
 
 import java.io.IOException;
 

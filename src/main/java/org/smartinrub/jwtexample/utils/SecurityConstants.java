@@ -1,6 +1,6 @@
 package org.smartinrub.jwtexample.utils;
 
-public class SecurtityConstants {
+public class SecurityConstants {
 
 	public static final String JWT_SECRET = "secret";
 	public static final long JWT_EXPIRATION_TIME = 30_000;
