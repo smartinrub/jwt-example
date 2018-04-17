@@ -20,9 +20,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RestController("/token")
 public class AuthenticationController {
 
-	final static String EMAIL = "email@domain.com";
-	final static String PASSWORD = "Password1";
-	final static String USERNAME = "Sergio";
+	private static final String EMAIL = "email@domain.com";
+	private static final String PASSWORD = "Password1";
+	private static final String USERNAME = "Sergio";
 
 	@PostMapping
 	public String getToken(@RequestBody @Valid User user) {
@@ -37,14 +37,12 @@ public class AuthenticationController {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("username", USERNAME);
 
-		String jwt = Jwts.builder()
+		return Jwts.builder()
 				.setClaims(claims)
 				.setSubject(email).setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS256, JWT_SECRET)
 				.compact();
-
-		return jwt;
 	}
 
 }
