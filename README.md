@@ -1,24 +1,16 @@
 # jwt-example
 
-## Get JWT token
+## Usage Example
+### Get JWT token
 
-url:
-http://localhost:8080/token
-
-body:
-
-```json
-{
-	"email":"email@domain.com",
-	"password":"Password1"
-}
+```shell
+curl -H "Content-Type: application/json" -X POST -d '{"email":"email@domain.com","password":"Password1"}' http://localhost:8080/token
 ```
 
-## Use JWT token
+### Use JWT token
 
-url:
-http://localhost:8080/index
+```shell
+curl -H "Authorization: Bearer <jwt_token>" -X GET http://localhost:8080/index
+```
 
-headers:
- * key: Authorization
- * value: Bearer <jwt_token>
+*jwt token only valid for 30 seconds*
