@@ -35,6 +35,10 @@ public class AuthenticationController {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("username", USERNAME);
 
+		return createToken(email, claims);
+	}
+
+	private String createToken(String email, Map<String, Object> claims) {
 		return Jwts.builder()
 				.setClaims(claims)
 				.setSubject(email).setIssuedAt(new Date())
@@ -42,5 +46,6 @@ public class AuthenticationController {
 				.signWith(SignatureAlgorithm.HS256, JWT_SECRET)
 				.compact();
 	}
+
 
 }
