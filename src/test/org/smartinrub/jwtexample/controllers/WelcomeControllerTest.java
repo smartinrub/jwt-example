@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.smartinrub.jwtexample.utils.SecurityConstants.JWT_EXPIRATION_TIME;
-import static org.smartinrub.jwtexample.utils.SecurityConstants.JWT_SECRET;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,12 +50,13 @@ public class WelcomeControllerTest {
                 .setClaims(claims)
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, JWT_SECRET)
+                .setExpiration(new Date(System.currentTimeMillis() + "30_000"))
+                .signWith(SignatureAlgorithm.HS256, "secret")
                 .compact();
 
         mockMvc.perform(get(WELCOME_ENDPOINT).header("Authorization", "Bearer " + jwt))
-                .andExpect(status().isOk()).andExpect(content().string(containsString("Welcome " + userName)));
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Welcome " + userName)));
     }
 
 }

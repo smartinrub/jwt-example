@@ -1,52 +1,51 @@
 package org.smartinrub.jwtexample.filters;
 
-import static org.smartinrub.jwtexample.utils.SecurityConstants.HEADER_STRING;
-import static org.smartinrub.jwtexample.utils.SecurityConstants.JWT_SECRET;
-import static org.smartinrub.jwtexample.utils.SecurityConstants.TOKEN_PREFIX;
-
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.web.filter.GenericFilterBean;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 
-public class JwtFilter extends GenericFilterBean {
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
-	@Override
-	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
-			throws IOException, ServletException {
+import static org.smartinrub.jwtexample.utils.SecurityConstants.HEADER_STRING;
+import static org.smartinrub.jwtexample.utils.SecurityConstants.TOKEN_PREFIX;
 
-		final HttpServletRequest request = (HttpServletRequest) req;
+public class JwtFilter implements Filter {
 
-		final String authHeader = request.getHeader(HEADER_STRING);
+    private final String jwtSecret;
 
-		if (authHeader == null || !authHeader.startsWith(TOKEN_PREFIX)) {
-			throw new ServletException("Token not found");
-		}
+    public JwtFilter(String jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
 
-		final String compactJws = authHeader.substring(TOKEN_PREFIX.length());
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
 
-		try {
-			final Claims claims = Jwts.parser()
-					.setSigningKey(JWT_SECRET)
-					.parseClaimsJws(compactJws)
-					.getBody();
-			// We can trust this JWT
-			request.setAttribute("username", claims.get("username"));
-		} catch (Exception e) {
-			// don't trust the JWT!
-			throw new JwtException("Invalid JWT token", e);
-		}
+        final HttpServletRequest request = (HttpServletRequest) req;
 
-		chain.doFilter(req, res);
-	}
+        final String authHeader = request.getHeader(HEADER_STRING);
+
+        if (authHeader == null || !authHeader.startsWith(TOKEN_PREFIX)) {
+            throw new ServletException("Token not found");
+        }
+
+        final String compactJws = authHeader.substring(TOKEN_PREFIX.length());
+
+        try {
+            final Claims claims = Jwts.parser()
+                    .setSigningKey(jwtSecret)
+                    .parseClaimsJws(compactJws)
+                    .getBody();
+            // We can trust this JWT
+            request.setAttribute("username", claims.get("username"));
+        } catch (Exception e) {
+            // don't trust the JWT!
+            throw new JwtException("Invalid JWT token", e);
+        }
+
+        chain.doFilter(req, res);
+    }
 
 }
